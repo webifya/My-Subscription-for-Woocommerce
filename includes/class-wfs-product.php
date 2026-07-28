@@ -20,6 +20,7 @@ class WFS_Product {
 		add_filter( 'woocommerce_add_cart_item_data', array( __CLASS__, 'cart_item_data' ), 10, 2 );
 		add_action( 'woocommerce_before_calculate_totals', array( __CLASS__, 'initial_cart_price' ) );
 		add_action( 'woocommerce_checkout_create_order_line_item', array( __CLASS__, 'order_item_data' ), 10, 4 );
+		add_action( 'woocommerce_wfs_subscription_add_to_cart', 'woocommerce_simple_add_to_cart', 30 );
 		add_action( 'admin_footer', array( __CLASS__, 'admin_script' ) );
 	}
 
@@ -30,7 +31,7 @@ class WFS_Product {
 	 * @return array
 	 */
 	public static function add_product_type( $types ) {
-		$types['wfs_subscription'] = __( 'Webifya subscription', 'webifya-subscriptions' );
+		$types['wfs_subscription'] = __( 'Subscription', 'webifya-subscriptions' );
 		return $types;
 	}
 
@@ -231,8 +232,12 @@ class WFS_Product {
 		?>
 		<script>
 		jQuery(function($) {
-			$('.options_group.pricing, .inventory_options').addClass('show_if_wfs_subscription');
-			$(document.body).trigger('woocommerce-product-type-change');
+			var $productType = $('#product-type');
+
+			$('.options_group.pricing, .inventory_options, .inventory_options + .options_group')
+				.addClass('show_if_wfs_subscription');
+
+			$productType.trigger('change');
 		});
 		</script>
 		<?php
