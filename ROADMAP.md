@@ -1,4 +1,4 @@
-# Webifya Subscriptions roadmap
+# Subscriptions for WooCommerce roadmap
 
 ## 0.1 — Gateway-neutral MVP
 
