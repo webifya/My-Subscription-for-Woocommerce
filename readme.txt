@@ -4,7 +4,7 @@ Tags: woocommerce, subscriptions, recurring payments, renewal orders
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.4.3
+Stable tag: 0.4.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,6 +44,11 @@ Features:
 5. Set its price and billing interval, then publish it.
 
 == Changelog ==
+
+= 0.4.4 =
+* Added an Upgrade to PRO menu and feature overview for free-edition users.
+* Added a $49.99/year single-site upgrade link to the Plugins screen.
+* Automatically hides upgrade promotion when PRO is active.
 
 = 0.4.3 =
 * Simplified cart and checkout billing terms to formats such as "$55 per year".
