@@ -140,7 +140,7 @@ class WFS_Settings {
 		}
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Subscriptions for WooCommerce settings', 'webifya-subscriptions' ); ?></h1>
+			<h1><?php esc_html_e( 'My Subscriptions for WooCommerce settings', 'webifya-subscriptions' ); ?></h1>
 			<form method="post" action="options.php">
 				<?php
 				settings_fields( 'wfs_settings' );
