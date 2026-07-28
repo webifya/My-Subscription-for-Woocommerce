@@ -4,7 +4,7 @@ Tags: woocommerce, subscriptions, recurring payments, renewal orders
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.3.2
+Stable tag: 0.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,12 @@ Features:
 5. Set its price and billing interval, then publish it.
 
 == Changelog ==
+
+= 0.4.0 =
+* Added full subscription terms to cart and checkout.
+* Added stable subscription status and renewal-paid integration events.
+* Added secure payment-token and filtered gateway metadata transfer to renewal orders.
+* Added automatic-payment interception before manual renewal invoices are sent.
 
 = 0.3.2 =
 * Renamed the plugin to My Subscriptions for WooCommerce.
