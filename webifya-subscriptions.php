@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Subscriptions for WooCommerce
+ * Plugin Name: My Subscriptions for WooCommerce
  * Description: Sell subscription products with gateway-neutral, customer-paid renewal orders.
- * Version: 0.3.1
+ * Version: 0.3.2
  * Author: Webifya
  * Text Domain: webifya-subscriptions
  * Requires at least: 6.4
@@ -15,7 +15,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WFS_VERSION', '0.3.1' );
+define( 'WFS_VERSION', '0.3.2' );
 define( 'WFS_PLUGIN_FILE', __FILE__ );
 define( 'WFS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
