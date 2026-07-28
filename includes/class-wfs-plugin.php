@@ -71,7 +71,7 @@ final class WFS_Plugin {
 	 */
 	public static function woocommerce_notice() {
 		echo '<div class="notice notice-error"><p>';
-		echo esc_html__( 'Webifya Subscriptions requires WooCommerce to be installed and active.', 'webifya-subscriptions' );
+		echo esc_html__( 'Subscriptions for WooCommerce requires WooCommerce to be installed and active.', 'webifya-subscriptions' );
 		echo '</p></div>';
 	}
 }
