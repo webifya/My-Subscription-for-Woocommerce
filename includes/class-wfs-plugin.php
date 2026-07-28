@@ -42,12 +42,14 @@ final class WFS_Plugin {
 		require_once WFS_PLUGIN_PATH . 'includes/class-wfs-renewals.php';
 		require_once WFS_PLUGIN_PATH . 'includes/class-wfs-account.php';
 		require_once WFS_PLUGIN_PATH . 'includes/class-wfs-settings.php';
+		require_once WFS_PLUGIN_PATH . 'includes/class-wfs-upgrade.php';
 
 		WFS_Product::init();
 		WFS_Subscription::init();
 		WFS_Renewals::init();
 		WFS_Account::init();
 		WFS_Settings::init();
+		WFS_Upgrade::init();
 
 		add_filter( 'woocommerce_gateway_title', array( __CLASS__, 'payment_gateway_title' ), 999, 2 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'checkout_styles' ), 30 );
