@@ -18,6 +18,7 @@ class WFS_Product {
 		add_action( 'woocommerce_admin_process_product_object', array( __CLASS__, 'save_product_fields' ) );
 		add_filter( 'woocommerce_get_price_html', array( __CLASS__, 'price_html' ), 10, 2 );
 		add_filter( 'woocommerce_add_cart_item_data', array( __CLASS__, 'cart_item_data' ), 10, 2 );
+		add_filter( 'woocommerce_get_item_data', array( __CLASS__, 'checkout_terms' ), 10, 2 );
 		add_action( 'woocommerce_before_calculate_totals', array( __CLASS__, 'initial_cart_price' ) );
 		add_action( 'woocommerce_checkout_create_order_line_item', array( __CLASS__, 'order_item_data' ), 10, 4 );
 		add_action( 'woocommerce_wfs_subscription_add_to_cart', 'woocommerce_simple_add_to_cart', 30 );
@@ -188,6 +189,51 @@ class WFS_Product {
 		$data['_wfs_recurring_price'] = $recurring;
 		$data['_wfs_initial_price']   = ( $trial ? 0 : $recurring ) + $signup;
 		return $data;
+	}
+
+	/**
+	 * Display subscription terms in cart and checkout.
+	 *
+	 * @param array $data Cart display data.
+	 * @param array $cart_item Cart item.
+	 * @return array
+	 */
+	public static function checkout_terms( $data, $cart_item ) {
+		$product = isset( $cart_item['data'] ) && $cart_item['data'] instanceof WC_Product ? $cart_item['data'] : null;
+		if ( ! $product || 'wfs_subscription' !== $product->get_type() ) {
+			return $data;
+		}
+
+		$interval = max( 1, absint( $product->get_meta( '_wfs_interval' ) ) );
+		$period   = sanitize_key( $product->get_meta( '_wfs_period' ) ?: 'month' );
+		$cadence  = 1 === $interval ? sprintf( __( 'Every %s', 'webifya-subscriptions' ), $period ) : sprintf( __( 'Every %1$d %2$ss', 'webifya-subscriptions' ), $interval, $period );
+		$data[]   = array( 'key' => __( 'Billing', 'webifya-subscriptions' ), 'value' => $cadence );
+
+		$trial = absint( $product->get_meta( '_wfs_trial_days' ) );
+		if ( $trial ) {
+			$data[] = array(
+				'key'   => __( 'Free trial', 'webifya-subscriptions' ),
+				'value' => sprintf( _n( '%d day', '%d days', $trial, 'webifya-subscriptions' ), $trial ),
+			);
+		}
+
+		$signup = (float) $product->get_meta( '_wfs_signup_fee' );
+		if ( $signup > 0 ) {
+			$data[] = array(
+				'key'   => __( 'One-time sign-up fee', 'webifya-subscriptions' ),
+				'value' => wp_strip_all_tags( wc_price( $signup ) ),
+			);
+		}
+
+		$limit = absint( $product->get_meta( '_wfs_renewal_limit' ) );
+		if ( $limit ) {
+			$data[] = array(
+				'key'   => __( 'Renewal payments', 'webifya-subscriptions' ),
+				'value' => (string) $limit,
+			);
+		}
+
+		return apply_filters( 'wfs_checkout_subscription_terms', $data, $product, $cart_item );
 	}
 
 	/**
