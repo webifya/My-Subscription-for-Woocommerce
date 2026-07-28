@@ -1,4 +1,4 @@
-# Subscriptions for WooCommerce roadmap
+# My Subscriptions for WooCommerce roadmap
 
 ## 0.1 — Gateway-neutral MVP
 
