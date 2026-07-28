@@ -51,6 +51,7 @@ final class WFS_Plugin {
 
 		add_filter( 'woocommerce_gateway_title', array( __CLASS__, 'payment_gateway_title' ), 999, 2 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'checkout_styles' ), 30 );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'checkout_scripts' ), 31 );
 	}
 
 	/**
@@ -98,6 +99,22 @@ final class WFS_Plugin {
 		wp_add_inline_style(
 			'wfs-checkout-compatibility',
 			'.woocommerce-checkout .wc_payment_method>label,.woocommerce-checkout .payment_methods label,.wc-block-checkout .wc-block-components-radio-control__label,.wc-block-checkout .wc-block-components-radio-control-accordion-option__label,.wc-block-checkout .wc-block-components-payment-method-label{display:flex!important;visibility:visible!important;opacity:1!important;color:inherit!important;align-items:center;gap:.5em}.wc-stripe-elements-field,.wc-square-credit-card-hosted-field,.wc-payment-form .form-row input{background:#fff!important;color:#1e1e1e!important;min-height:44px}.wc-stripe-elements-field iframe,.wc-square-credit-card-hosted-field iframe{background:#fff!important;color-scheme:light}.payment_box{color-scheme:light}'
+		);
+	}
+
+	/**
+	 * Repair blank client-rendered gateway labels in classic and block checkout.
+	 */
+	public static function checkout_scripts() {
+		if ( ! function_exists( 'is_checkout' ) || ! is_checkout() ) {
+			return;
+		}
+
+		wp_register_script( 'wfs-checkout-compatibility', false, array(), WFS_VERSION, true );
+		wp_enqueue_script( 'wfs-checkout-compatibility' );
+		wp_add_inline_script(
+			'wfs-checkout-compatibility',
+			"(function(){'use strict';function titleFor(value){value=(value||'').toLowerCase();if(value.indexOf('google')!==-1)return 'Google Pay';if(value.indexOf('apple')!==-1)return 'Apple Pay';if(value.indexOf('paypal')!==-1||value.indexOf('ppcp')!==-1)return value.indexOf('card')!==-1?'Credit or debit card (PayPal)':'PayPal';if(value.indexOf('square')!==-1)return 'Credit or debit card (Square)';if(value.indexOf('stripe')!==-1||value.indexOf('wcpay')!==-1||value.indexOf('woocommerce_payments')!==-1||value.indexOf('card')!==-1)return 'Credit or debit card';return 'Payment method';}function repair(){document.querySelectorAll('.wc_payment_method,.wc-block-components-radio-control-accordion-option,.wc-block-components-radio-control__option').forEach(function(row){var input=row.querySelector('input[type=\"radio\"]');var label=input&&input.id?row.querySelector('label[for=\"'+CSS.escape(input.id)+'\"]'):row.querySelector('label');if(!input||!label)return;var text=(label.textContent||'').replace(/\\s+/g,'').trim();var alt=label.querySelector('img[alt]');if(!text&&!alt){var span=document.createElement('span');span.className='wfs-payment-method-title';span.textContent=titleFor(input.value||input.id);label.appendChild(span);}if(!input.getAttribute('aria-label'))input.setAttribute('aria-label',titleFor(input.value||input.id));});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',repair);else repair();new MutationObserver(repair).observe(document.documentElement,{childList:true,subtree:true});if(window.jQuery)window.jQuery(document.body).on('updated_checkout',repair);})();"
 		);
 	}
 
