@@ -4,7 +4,7 @@ Tags: woocommerce, subscriptions, recurring payments, renewal orders
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.4.1
+Stable tag: 0.4.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,6 +13,8 @@ Sell subscriptions with any WooCommerce payment gateway through customer-paid re
 == Description ==
 
 My Subscriptions for WooCommerce adds a subscription product type to WooCommerce. After the initial order is paid, it schedules renewal orders at the product's billing interval. Customers receive a normal WooCommerce renewal order and can pay it with any gateway enabled for that order.
+
+Developed by Mahfuzar Rahman. Company website: https://www.webninjallc.com/
 
 This gateway-neutral approach does not claim that every gateway can charge a customer automatically. Automatic off-session charging requires explicit support from the payment gateway and provider. Version 0.1 uses customer-paid renewals for predictable compatibility.
 
@@ -42,6 +44,9 @@ Features:
 5. Set its price and billing interval, then publish it.
 
 == Changelog ==
+
+= 0.4.2 =
+* Updated plugin authorship to Mahfuzar Rahman and added official profile and company URLs.
 
 = 0.4.1 =
 * Prevented enabled checkout gateways from displaying a blank payment-method title.
