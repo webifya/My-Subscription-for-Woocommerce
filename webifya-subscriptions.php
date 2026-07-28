@@ -3,7 +3,7 @@
  * Plugin Name: My Subscriptions for WooCommerce
  * Plugin URI: https://www.webninjallc.com/
  * Description: Sell subscription products with gateway-neutral, customer-paid renewal orders.
- * Version: 0.4.2
+ * Version: 0.4.3
  * Author: Mahfuzar Rahman
  * Author URI: https://github.com/webifya
  * Text Domain: webifya-subscriptions
@@ -17,7 +17,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WFS_VERSION', '0.4.2' );
+define( 'WFS_VERSION', '0.4.3' );
 define( 'WFS_PLUGIN_FILE', __FILE__ );
 define( 'WFS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
