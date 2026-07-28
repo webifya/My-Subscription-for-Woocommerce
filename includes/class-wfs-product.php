@@ -204,10 +204,14 @@ class WFS_Product {
 			return $data;
 		}
 
-		$interval = max( 1, absint( $product->get_meta( '_wfs_interval' ) ) );
-		$period   = sanitize_key( $product->get_meta( '_wfs_period' ) ?: 'month' );
-		$cadence  = 1 === $interval ? sprintf( __( 'Every %s', 'webifya-subscriptions' ), $period ) : sprintf( __( 'Every %1$d %2$ss', 'webifya-subscriptions' ), $interval, $period );
-		$data[]   = array( 'key' => __( 'Billing', 'webifya-subscriptions' ), 'value' => $cadence );
+		$interval  = max( 1, absint( $product->get_meta( '_wfs_interval' ) ) );
+		$period    = sanitize_key( $product->get_meta( '_wfs_period' ) ?: 'month' );
+		$recurring = isset( $cart_item['_wfs_recurring_price'] ) ? (float) $cart_item['_wfs_recurring_price'] : (float) $product->get_regular_price();
+		$price     = html_entity_decode( wp_strip_all_tags( wc_price( $recurring ) ), ENT_QUOTES, get_bloginfo( 'charset' ) );
+		$cadence   = 1 === $interval
+			? sprintf( __( '%1$s per %2$s', 'webifya-subscriptions' ), $price, $period )
+			: sprintf( __( '%1$s every %2$d %3$ss', 'webifya-subscriptions' ), $price, $interval, $period );
+		$data[]    = array( 'key' => __( 'Billing', 'webifya-subscriptions' ), 'value' => $cadence );
 
 		$trial = absint( $product->get_meta( '_wfs_trial_days' ) );
 		if ( $trial ) {
