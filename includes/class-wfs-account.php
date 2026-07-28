@@ -106,7 +106,7 @@ class WFS_Account {
 			exit;
 		}
 
-		update_post_meta( $subscription_id, '_wfs_status', 'cancelled' );
+		WFS_Subscription::set_status( $subscription_id, 'cancelled', 'customer-cancelled' );
 		$pending = wc_get_order( absint( get_post_meta( $subscription_id, '_wfs_pending_order_id', true ) ) );
 		if ( $pending && $pending->needs_payment() ) {
 			$pending->update_status( 'cancelled', __( 'Related subscription cancelled by customer.', 'webifya-subscriptions' ) );
