@@ -48,6 +48,57 @@ final class WFS_Plugin {
 		WFS_Renewals::init();
 		WFS_Account::init();
 		WFS_Settings::init();
+
+		add_filter( 'woocommerce_gateway_title', array( __CLASS__, 'payment_gateway_title' ), 999, 2 );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'checkout_styles' ), 30 );
+	}
+
+	/**
+	 * Never allow an enabled payment gateway to render a blank checkout title.
+	 *
+	 * @param string $title Gateway title.
+	 * @param string $gateway_id Gateway ID.
+	 * @return string
+	 */
+	public static function payment_gateway_title( $title, $gateway_id ) {
+		$plain = html_entity_decode( wp_strip_all_tags( (string) $title ), ENT_QUOTES, get_bloginfo( 'charset' ) );
+		$plain = trim( str_replace( "\xc2\xa0", ' ', $plain ) );
+		if ( '' !== $plain ) {
+			return $title;
+		}
+
+		$known = array(
+			'stripe'                   => __( 'Credit or debit card', 'webifya-subscriptions' ),
+			'stripe_cc'                => __( 'Credit or debit card', 'webifya-subscriptions' ),
+			'stripe_googlepay'         => __( 'Google Pay', 'webifya-subscriptions' ),
+			'stripe_applepay'          => __( 'Apple Pay', 'webifya-subscriptions' ),
+			'square_credit_card'       => __( 'Credit or debit card (Square)', 'webifya-subscriptions' ),
+			'ppcp-gateway'             => __( 'PayPal', 'webifya-subscriptions' ),
+			'ppcp-credit-card-gateway' => __( 'Credit or debit card (PayPal)', 'webifya-subscriptions' ),
+			'ppcp-card-button-gateway' => __( 'Credit or debit card (PayPal)', 'webifya-subscriptions' ),
+		);
+		if ( isset( $known[ $gateway_id ] ) ) {
+			return $known[ $gateway_id ];
+		}
+
+		$fallback = ucwords( str_replace( array( '-', '_' ), ' ', sanitize_key( $gateway_id ) ) );
+		return $fallback ?: __( 'Payment method', 'webifya-subscriptions' );
+	}
+
+	/**
+	 * Keep classic and block checkout payment labels and hosted fields visible.
+	 */
+	public static function checkout_styles() {
+		if ( ! function_exists( 'is_checkout' ) || ! is_checkout() ) {
+			return;
+		}
+
+		wp_register_style( 'wfs-checkout-compatibility', false, array(), WFS_VERSION );
+		wp_enqueue_style( 'wfs-checkout-compatibility' );
+		wp_add_inline_style(
+			'wfs-checkout-compatibility',
+			'.woocommerce-checkout .wc_payment_method>label,.woocommerce-checkout .payment_methods label,.wc-block-checkout .wc-block-components-radio-control__label,.wc-block-checkout .wc-block-components-radio-control-accordion-option__label,.wc-block-checkout .wc-block-components-payment-method-label{display:flex!important;visibility:visible!important;opacity:1!important;color:inherit!important;align-items:center;gap:.5em}.wc-stripe-elements-field,.wc-square-credit-card-hosted-field,.wc-payment-form .form-row input{background:#fff!important;color:#1e1e1e!important;min-height:44px}.wc-stripe-elements-field iframe,.wc-square-credit-card-hosted-field iframe{background:#fff!important;color-scheme:light}.payment_box{color-scheme:light}'
+		);
 	}
 
 	/**
