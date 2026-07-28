@@ -79,7 +79,7 @@ class WFS_Renewals {
 		$parent  = wc_get_order( absint( get_post_meta( $subscription_id, '_wfs_parent_order_id', true ) ) );
 		$product = wc_get_product( absint( get_post_meta( $subscription_id, '_wfs_product_id', true ) ) );
 		if ( ! $parent || ! $product ) {
-			update_post_meta( $subscription_id, '_wfs_status', 'on-hold' );
+			WFS_Subscription::set_status( $subscription_id, 'on-hold', 'missing-product' );
 			return;
 		}
 
@@ -91,6 +91,21 @@ class WFS_Renewals {
 		$order->set_address( $parent->get_address( 'billing' ), 'billing' );
 		$order->set_address( $parent->get_address( 'shipping' ), 'shipping' );
 		$order->set_currency( get_post_meta( $subscription_id, '_wfs_currency', true ) ?: $parent->get_currency() );
+		$order->set_payment_method( $parent->get_payment_method() );
+		$order->set_payment_method_title( $parent->get_payment_method_title() );
+		foreach ( $parent->get_payment_tokens() as $token_id ) {
+			$token = WC_Payment_Tokens::get( $token_id );
+			if ( $token instanceof WC_Payment_Token ) {
+				$order->add_payment_token( $token );
+			}
+		}
+		$payment_meta_keys = apply_filters( 'wfs_renewal_payment_meta_keys', array(), $parent, $subscription_id );
+		foreach ( array_unique( array_filter( array_map( 'sanitize_key', $payment_meta_keys ) ) ) as $meta_key ) {
+			$value = $parent->get_meta( $meta_key, true );
+			if ( '' !== $value ) {
+				$order->update_meta_data( $meta_key, $value );
+			}
+		}
 		$quantity = max( 1, absint( get_post_meta( $subscription_id, '_wfs_quantity', true ) ) );
 		$price    = (float) get_post_meta( $subscription_id, '_wfs_recurring_price', true );
 		$total    = wc_format_decimal( $price * $quantity );
@@ -110,11 +125,14 @@ class WFS_Renewals {
 
 		update_post_meta( $subscription_id, '_wfs_pending_order_id', $order->get_id() );
 		update_post_meta( $subscription_id, '_wfs_retry_count', 0 );
-		update_post_meta( $subscription_id, '_wfs_status', 'active' );
+		WFS_Subscription::set_status( $subscription_id, 'active', 'renewal-created' );
 		self::schedule_retry( $subscription_id, time() + ( DAY_IN_SECONDS * WFS_Settings::get( 'retry_days' ) ) );
 
-		self::send_invoice( $order );
 		do_action( 'wfs_renewal_order_created', $order, $subscription_id );
+		$order = wc_get_order( $order->get_id() );
+		if ( $order && $order->needs_payment() ) {
+			self::send_invoice( $order );
+		}
 	}
 
 	/**
@@ -139,10 +157,10 @@ class WFS_Renewals {
 		update_post_meta( $subscription_id, '_wfs_retry_count', $count );
 
 		if ( $count >= $max ) {
-			update_post_meta( $subscription_id, '_wfs_status', 'on-hold' );
+			WFS_Subscription::set_status( $subscription_id, 'on-hold', 'retry-exhausted' );
 			$order->add_order_note( __( 'Final subscription renewal reminder sent; subscription placed on hold.', 'webifya-subscriptions' ) );
 		} else {
-			update_post_meta( $subscription_id, '_wfs_status', 'past-due' );
+			WFS_Subscription::set_status( $subscription_id, 'past-due', 'payment-retry' );
 			$order->add_order_note(
 				sprintf(
 					/* translators: 1: attempt number, 2: maximum attempts. */
@@ -154,8 +172,11 @@ class WFS_Renewals {
 			self::schedule_retry( $subscription_id, time() + ( DAY_IN_SECONDS * WFS_Settings::get( 'retry_days' ) ) );
 		}
 
-		self::send_invoice( $order );
 		do_action( 'wfs_renewal_payment_retried', $order, $subscription_id, $count, $max );
+		$order = wc_get_order( $order->get_id() );
+		if ( $order && $order->needs_payment() ) {
+			self::send_invoice( $order );
+		}
 	}
 
 	/**
@@ -171,7 +192,7 @@ class WFS_Renewals {
 
 		$subscription_id = absint( $order->get_meta( '_wfs_subscription_id' ) );
 		if ( $subscription_id && 'cancelled' !== get_post_meta( $subscription_id, '_wfs_status', true ) ) {
-			update_post_meta( $subscription_id, '_wfs_status', 'past-due' );
+			WFS_Subscription::set_status( $subscription_id, 'past-due', 'payment-failed' );
 			self::schedule_retry( $subscription_id, time() + ( DAY_IN_SECONDS * WFS_Settings::get( 'retry_days' ) ) );
 		}
 	}
@@ -223,17 +244,19 @@ class WFS_Renewals {
 		$order->save();
 
 		if ( $limit && $completed >= $limit ) {
-			update_post_meta( $subscription_id, '_wfs_status', 'expired' );
+			WFS_Subscription::set_status( $subscription_id, 'expired', 'renewal-limit' );
 			delete_post_meta( $subscription_id, '_wfs_next_payment' );
 			do_action( 'wfs_subscription_expired', $subscription_id, $order );
+			do_action( 'wfs_subscription_renewal_paid', $subscription_id, $order, 'expired' );
 			return;
 		}
 
 		$interval = max( 1, absint( get_post_meta( $subscription_id, '_wfs_interval', true ) ) );
 		$period   = sanitize_key( get_post_meta( $subscription_id, '_wfs_period', true ) );
 		$next     = WFS_Subscription::next_timestamp( time(), $interval, $period );
-		update_post_meta( $subscription_id, '_wfs_status', 'active' );
+		WFS_Subscription::set_status( $subscription_id, 'active', 'renewal-paid' );
 		update_post_meta( $subscription_id, '_wfs_next_payment', $next );
 		self::schedule( $subscription_id, $next );
+		do_action( 'wfs_subscription_renewal_paid', $subscription_id, $order, 'active' );
 	}
 }
