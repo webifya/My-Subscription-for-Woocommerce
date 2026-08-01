@@ -1,22 +1,24 @@
 === Subscribely – Recurring Billing for WooCommerce ===
 Contributors: webifya
-Tags: woocommerce, subscriptions, recurring payments, renewal orders
+Tags: woocommerce, subscriptions, recurring payments, subscription products, renewal orders
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.5.0
+Stable tag: 0.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Sell subscriptions with any WooCommerce payment gateway through customer-paid renewal orders.
+Create flexible WooCommerce subscriptions with scheduled renewals, failed-payment recovery, trials, sign-up fees, and gateway-neutral renewal invoices.
 
 == Description ==
 
-Subscribely – Recurring Billing for WooCommerce adds a subscription product type to WooCommerce. After the initial order is paid, it schedules renewal orders at the product's billing interval. Customers receive a normal WooCommerce renewal order and can pay it with any gateway enabled for that order.
+Subscribely – Recurring Billing for WooCommerce turns ordinary products into daily, weekly, monthly, or yearly subscriptions while keeping orders and checkout inside WooCommerce.
+
+After the initial order is paid, Subscribely schedules each renewal, creates a normal WooCommerce renewal order, and gives the customer a clear subscription record in My Account. Renewal invoices work with any payment gateway enabled for that order. The plugin also handles failed-payment reminders, recovery, trials, sign-up fees, renewal limits, and renewal price snapshots.
 
 Developed by Mahfuzar Rahman. Company website: https://www.webninjallc.com/
 
-This gateway-neutral approach does not claim that every gateway can charge a customer automatically. Automatic off-session charging requires explicit support from the payment gateway and provider. Version 0.1 uses customer-paid renewals for predictable compatibility.
+The Free edition uses customer-paid renewal invoices for broad gateway compatibility. Automatic off-session charging requires explicit saved-method support and is available in Subscribely PRO for compatible official Stripe, PayPal Payments, and Square gateways.
 
 Features:
 
@@ -35,6 +37,12 @@ Features:
 * One-time sign-up fees.
 * Fixed renewal limits with automatic expiration.
 
+= Upgrade to Subscribely PRO =
+
+Subscribely PRO adds automatic supported-gateway renewals, retry handling with invoice fallback, customer pause and resume, early renewal, advanced administration, and protected subscriber downloads with limits and expiry.
+
+Subscribely PRO is currently $69.99 per year. Learn more at https://www.webninjallc.com/plugins/subscribely/ or purchase at https://www.webninjallc.com/product/subscribely-pro-recurring-billing-for-woocommerce/
+
 == Installation ==
 
 1. Install and activate WooCommerce.
@@ -43,7 +51,49 @@ Features:
 4. Create a product and choose "Subscription" as its product type.
 5. Set its price and billing interval, then publish it.
 
+== Frequently Asked Questions ==
+
+= Can customers use any WooCommerce payment gateway? =
+
+Yes. Customer-paid renewal invoices can use any gateway enabled for the renewal order. Automatic renewals require a compatible saved payment method and supported PRO gateway integration.
+
+= Does the Free edition automatically charge customers? =
+
+The Free edition creates scheduled renewal orders and customer-paid invoices. Subscribely PRO can automatically charge compatible saved methods through supported official Stripe, PayPal Payments, and Square gateways.
+
+= What happens when a renewal payment fails? =
+
+Subscribely records the failed renewal, schedules configured reminders, and updates the subscription lifecycle. A late paid renewal can recover the subscription automatically.
+
+= Can I offer free trials or charge a sign-up fee? =
+
+Yes. Subscription products can include a free trial, one-time sign-up fee, and optional renewal limit.
+
+= Can customers manage subscriptions from My Account? =
+
+Yes. Customers can view subscriptions and pay renewal orders. PRO adds merchant-controlled pause, resume, early renewal, and premium detail screens.
+
+= Can I sell downloadable subscription products? =
+
+Yes, with Subscribely PRO. PRO protects WooCommerce downloads, applies limits and expiry, resets eligible access after renewal, and revokes access when entitlement ends.
+
+= Does Subscribely support HPOS? =
+
+Yes. The plugin declares compatibility with WooCommerce High-Performance Order Storage and uses WooCommerce order APIs.
+
+= What information is shared with Web Ninja LLC? =
+
+The Free edition shares a site profile only after an administrator explicitly opts in. It never sends orders, customers, payment details, or subscription records. Disabling permission requests deletion of the stored Free profile.
+
 == Changelog ==
+
+= 0.5.1 =
+* Added an explicit opt-in setting for consent-based site profile sharing with Web Ninja LLC License Manager.
+* Added weekly profile refreshes and automatic profile removal when consent is withdrawn.
+* Site profiles never include orders, customers, payments, or subscription records.
+* Added Settings and Go PRO links on the Plugins screen.
+* Updated the annual PRO offer to $69.99 and expanded the upgrade presentation.
+* Improved the description, FAQ, documentation, and details metadata.
 
 = 0.5.0 =
 * Rebranded the public plugin as Subscribely – Recurring Billing for WooCommerce.

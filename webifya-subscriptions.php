@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: Subscribely – Recurring Billing for WooCommerce
- * Plugin URI: https://www.webninjallc.com/
- * Description: Sell recurring products with flexible billing, renewal orders, and WooCommerce payment gateway compatibility.
- * Version: 0.5.0
+ * Plugin URI: https://www.webninjallc.com/plugins/subscribely/
+ * Description: Create flexible WooCommerce subscriptions with renewal scheduling, payment recovery, trials, sign-up fees, and gateway-neutral invoices.
+ * Version: 0.5.1
  * Author: Mahfuzar Rahman
  * Author URI: https://github.com/webifya
  * Text Domain: subscribely-recurring-billing
@@ -17,7 +17,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WFS_VERSION', '0.5.0' );
+define( 'WFS_VERSION', '0.5.1' );
 define( 'WFS_PLUGIN_FILE', __FILE__ );
 define( 'WFS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 

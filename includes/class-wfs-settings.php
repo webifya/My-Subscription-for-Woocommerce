@@ -61,6 +61,20 @@ class WFS_Settings {
 			'wfs_dunning',
 			array( 'key' => 'retry_days', 'min' => 1, 'max' => 30 )
 		);
+
+		add_settings_section(
+			'wfs_privacy',
+			__( 'Site profile and privacy', 'subscribely-recurring-billing' ),
+			array( __CLASS__, 'privacy_section' ),
+			'wfs-settings'
+		);
+		add_settings_field(
+			'share_site_profile',
+			__( 'Share site profile', 'subscribely-recurring-billing' ),
+			array( __CLASS__, 'profile_consent_field' ),
+			'wfs-settings',
+			'wfs_privacy'
+		);
 		add_settings_field(
 			'max_retries',
 			__( 'Maximum reminders', 'subscribely-recurring-billing' ),
@@ -78,8 +92,9 @@ class WFS_Settings {
 	 */
 	public static function defaults() {
 		return array(
-			'retry_days' => 3,
-			'max_retries' => 3,
+			'retry_days'         => 3,
+			'max_retries'        => 3,
+			'share_site_profile' => 0,
 		);
 	}
 
@@ -103,8 +118,9 @@ class WFS_Settings {
 	public static function sanitize( $values ) {
 		$values = is_array( $values ) ? $values : array();
 		return array(
-			'retry_days'  => min( 30, max( 1, absint( $values['retry_days'] ?? 3 ) ) ),
-			'max_retries' => min( 10, max( 1, absint( $values['max_retries'] ?? 3 ) ) ),
+			'retry_days'         => min( 30, max( 1, absint( $values['retry_days'] ?? 3 ) ) ),
+			'max_retries'        => min( 10, max( 1, absint( $values['max_retries'] ?? 3 ) ) ),
+			'share_site_profile' => empty( $values['share_site_profile'] ) ? 0 : 1,
 		);
 	}
 
@@ -113,6 +129,22 @@ class WFS_Settings {
 	 */
 	public static function section() {
 		echo '<p>' . esc_html__( 'Unpaid renewal orders are reminded automatically. After the final attempt, the subscription is placed on hold until the order is paid.', 'subscribely-recurring-billing' ) . '</p>';
+	}
+
+	/** Explain the optional profile collection. */
+	public static function privacy_section() {
+		echo '<p>' . esc_html__( 'Help Web Ninja LLC understand compatibility and provide support. Nothing is shared unless you opt in, and disabling the option requests deletion of the stored profile.', 'subscribely-recurring-billing' ) . '</p>';
+	}
+
+	/** Render explicit site-profile consent. */
+	public static function profile_consent_field() {
+		printf(
+			'<label><input type="checkbox" name="%1$s[share_site_profile]" value="1" %2$s /> %3$s</label><p class="description">%4$s</p>',
+			esc_attr( self::OPTION ),
+			checked( self::get( 'share_site_profile' ), 1, false ),
+			esc_html__( 'Allow Subscribely to share this website profile with Web Ninja LLC.', 'subscribely-recurring-billing' ),
+			esc_html__( 'Includes the website and business name, administrator name/email/phone, domain, plugin version, WordPress/PHP versions, active theme, and multisite status. No order, customer, payment, or subscription data is collected.', 'subscribely-recurring-billing' )
+		);
 	}
 
 	/**
