@@ -1,10 +1,10 @@
-=== My Subscriptions for WooCommerce ===
+=== Subscribely – Recurring Billing for WooCommerce ===
 Contributors: webifya
 Tags: woocommerce, subscriptions, recurring payments, renewal orders
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.4.4
+Stable tag: 0.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ Sell subscriptions with any WooCommerce payment gateway through customer-paid re
 
 == Description ==
 
-My Subscriptions for WooCommerce adds a subscription product type to WooCommerce. After the initial order is paid, it schedules renewal orders at the product's billing interval. Customers receive a normal WooCommerce renewal order and can pay it with any gateway enabled for that order.
+Subscribely – Recurring Billing for WooCommerce adds a subscription product type to WooCommerce. After the initial order is paid, it schedules renewal orders at the product's billing interval. Customers receive a normal WooCommerce renewal order and can pay it with any gateway enabled for that order.
 
 Developed by Mahfuzar Rahman. Company website: https://www.webninjallc.com/
 
@@ -39,11 +39,16 @@ Features:
 
 1. Install and activate WooCommerce.
 2. Upload this plugin folder to `/wp-content/plugins/`.
-3. Activate My Subscriptions for WooCommerce.
+3. Activate Subscribely – Recurring Billing for WooCommerce.
 4. Create a product and choose "Subscription" as its product type.
 5. Set its price and billing interval, then publish it.
 
 == Changelog ==
+
+= 0.5.0 =
+* Rebranded the public plugin as Subscribely – Recurring Billing for WooCommerce.
+* Updated plugin metadata, administration copy, documentation, and translation domain.
+* Preserved all existing `wfs_` subscription records, hooks, schedules, and product types for seamless upgrades.
 
 = 0.4.4 =
 * Added an Upgrade to PRO menu and feature overview for free-edition users.
