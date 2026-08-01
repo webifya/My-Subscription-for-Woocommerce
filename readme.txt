@@ -4,7 +4,7 @@ Tags: woocommerce, subscriptions, recurring payments, subscription products, ren
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.5.4
+Stable tag: 0.5.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -86,6 +86,9 @@ Yes. The plugin declares compatibility with WooCommerce High-Performance Order S
 The Free edition shares a site profile only after an administrator explicitly opts in. It never sends orders, customers, payment details, or subscription records. Disabling permission requests deletion of the stored Free profile.
 
 == Changelog ==
+
+= 0.5.5 =
+* Simplified plugin-row metadata by retaining Documentation and removing duplicate FAQ and Plugin details links.
 
 = 0.5.4 =
 * Routed all Free-edition PRO promotions through the Subscribely sales page.
