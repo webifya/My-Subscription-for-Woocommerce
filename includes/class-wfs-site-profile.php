@@ -13,9 +13,18 @@ class WFS_Site_Profile {
 	/** Register profile refresh hooks. */
 	public static function init() {
 		add_action( self::CRON, array( __CLASS__, 'send' ) );
+		add_action( 'add_option_' . WFS_Settings::OPTION, array( __CLASS__, 'settings_added' ), 10, 2 );
 		add_action( 'update_option_' . WFS_Settings::OPTION, array( __CLASS__, 'settings_updated' ), 10, 2 );
 		add_action( 'admin_init', array( __CLASS__, 'schedule' ) );
 		add_action( 'upgrader_process_complete', array( __CLASS__, 'plugin_updated' ), 10, 2 );
+		self::schedule();
+	}
+
+	/** Send immediately when the settings option is saved for the first time. */
+	public static function settings_added( $option, $value ) {
+		if ( ! empty( $value['share_site_profile'] ) ) {
+			self::send( true );
+		}
 		self::schedule();
 	}
 
@@ -42,7 +51,8 @@ class WFS_Site_Profile {
 
 	/** Refresh after this plugin is upgraded. */
 	public static function plugin_updated( $upgrader, $options ) {
-		if ( 'plugin' === ( $options['type'] ?? '' ) && WFS_Settings::get( 'share_site_profile' ) ) {
+		$plugins = isset( $options['plugins'] ) && is_array( $options['plugins'] ) ? $options['plugins'] : array( $options['plugin'] ?? '' );
+		if ( 'plugin' === ( $options['type'] ?? '' ) && in_array( plugin_basename( WFS_PLUGIN_FILE ), $plugins, true ) && WFS_Settings::get( 'share_site_profile' ) ) {
 			self::send( true );
 		}
 	}
