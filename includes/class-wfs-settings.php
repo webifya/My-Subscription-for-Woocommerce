@@ -2,7 +2,7 @@
 /**
  * Subscription settings.
  *
- * @package Webifya_Subscriptions
+ * @package Subscribely_Recurring_Billing
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -24,8 +24,8 @@ class WFS_Settings {
 	public static function menu() {
 		add_submenu_page(
 			'woocommerce',
-			__( 'Subscription settings', 'webifya-subscriptions' ),
-			__( 'Subscription settings', 'webifya-subscriptions' ),
+			__( 'Subscription settings', 'subscribely-recurring-billing' ),
+			__( 'Subscription settings', 'subscribely-recurring-billing' ),
 			'manage_woocommerce',
 			'wfs-settings',
 			array( __CLASS__, 'page' )
@@ -48,14 +48,14 @@ class WFS_Settings {
 
 		add_settings_section(
 			'wfs_dunning',
-			__( 'Failed-payment recovery', 'webifya-subscriptions' ),
+			__( 'Failed-payment recovery', 'subscribely-recurring-billing' ),
 			array( __CLASS__, 'section' ),
 			'wfs-settings'
 		);
 
 		add_settings_field(
 			'retry_days',
-			__( 'Days between reminders', 'webifya-subscriptions' ),
+			__( 'Days between reminders', 'subscribely-recurring-billing' ),
 			array( __CLASS__, 'number_field' ),
 			'wfs-settings',
 			'wfs_dunning',
@@ -63,7 +63,7 @@ class WFS_Settings {
 		);
 		add_settings_field(
 			'max_retries',
-			__( 'Maximum reminders', 'webifya-subscriptions' ),
+			__( 'Maximum reminders', 'subscribely-recurring-billing' ),
 			array( __CLASS__, 'number_field' ),
 			'wfs-settings',
 			'wfs_dunning',
@@ -112,7 +112,7 @@ class WFS_Settings {
 	 * Settings introduction.
 	 */
 	public static function section() {
-		echo '<p>' . esc_html__( 'Unpaid renewal orders are reminded automatically. After the final attempt, the subscription is placed on hold until the order is paid.', 'webifya-subscriptions' ) . '</p>';
+		echo '<p>' . esc_html__( 'Unpaid renewal orders are reminded automatically. After the final attempt, the subscription is placed on hold until the order is paid.', 'subscribely-recurring-billing' ) . '</p>';
 	}
 
 	/**
@@ -140,7 +140,7 @@ class WFS_Settings {
 		}
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'My Subscriptions for WooCommerce settings', 'webifya-subscriptions' ); ?></h1>
+			<h1><?php esc_html_e( 'Subscribely – Recurring Billing for WooCommerce settings', 'subscribely-recurring-billing' ); ?></h1>
 			<form method="post" action="options.php">
 				<?php
 				settings_fields( 'wfs_settings' );
