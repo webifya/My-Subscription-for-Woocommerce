@@ -2,7 +2,7 @@
 /**
  * Subscription records.
  *
- * @package Webifya_Subscriptions
+ * @package Subscribely_Recurring_Billing
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -65,8 +65,8 @@ class WFS_Subscription {
 			self::POST_TYPE,
 			array(
 				'labels' => array(
-					'name'          => __( 'Subscriptions', 'webifya-subscriptions' ),
-					'singular_name' => __( 'Subscription', 'webifya-subscriptions' ),
+					'name'          => __( 'Subscriptions', 'subscribely-recurring-billing' ),
+					'singular_name' => __( 'Subscription', 'subscribely-recurring-billing' ),
 				),
 				'public'              => false,
 				'show_ui'             => true,
@@ -107,7 +107,7 @@ class WFS_Subscription {
 				array(
 					'post_type'   => self::POST_TYPE,
 					'post_status' => 'publish',
-					'post_title'  => sprintf( __( 'Subscription for order #%s', 'webifya-subscriptions' ), $order->get_order_number() ),
+					'post_title'  => sprintf( __( 'Subscription for order #%s', 'subscribely-recurring-billing' ), $order->get_order_number() ),
 					'post_author' => (int) $order->get_customer_id(),
 				)
 			);
@@ -191,10 +191,10 @@ class WFS_Subscription {
 	public static function columns() {
 		return array(
 			'cb'       => '<input type="checkbox" />',
-			'title'    => __( 'Subscription', 'webifya-subscriptions' ),
-			'status'   => __( 'Status', 'webifya-subscriptions' ),
-			'customer' => __( 'Customer', 'webifya-subscriptions' ),
-			'next'     => __( 'Next payment', 'webifya-subscriptions' ),
+			'title'    => __( 'Subscription', 'subscribely-recurring-billing' ),
+			'status'   => __( 'Status', 'subscribely-recurring-billing' ),
+			'customer' => __( 'Customer', 'subscribely-recurring-billing' ),
+			'next'     => __( 'Next payment', 'subscribely-recurring-billing' ),
 		);
 	}
 
