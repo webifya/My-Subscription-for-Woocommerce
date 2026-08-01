@@ -2,7 +2,7 @@
 /**
  * Subscription product integration.
  *
- * @package Webifya_Subscriptions
+ * @package Subscribely_Recurring_Billing
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -32,7 +32,7 @@ class WFS_Product {
 	 * @return array
 	 */
 	public static function add_product_type( $types ) {
-		$types['wfs_subscription'] = __( 'Subscription', 'webifya-subscriptions' );
+		$types['wfs_subscription'] = __( 'Subscription', 'subscribely-recurring-billing' );
 		return $types;
 	}
 
@@ -56,7 +56,7 @@ class WFS_Product {
 		woocommerce_wp_text_input(
 			array(
 				'id'                => '_wfs_interval',
-				'label'             => __( 'Billing interval', 'webifya-subscriptions' ),
+				'label'             => __( 'Billing interval', 'subscribely-recurring-billing' ),
 				'type'              => 'number',
 				'value'             => get_post_meta( get_the_ID(), '_wfs_interval', true ) ?: 1,
 				'custom_attributes' => array( 'min' => 1, 'step' => 1 ),
@@ -66,12 +66,12 @@ class WFS_Product {
 		woocommerce_wp_select(
 			array(
 				'id'      => '_wfs_period',
-				'label'   => __( 'Billing period', 'webifya-subscriptions' ),
+				'label'   => __( 'Billing period', 'subscribely-recurring-billing' ),
 				'options' => array(
-					'day'   => __( 'Day(s)', 'webifya-subscriptions' ),
-					'week'  => __( 'Week(s)', 'webifya-subscriptions' ),
-					'month' => __( 'Month(s)', 'webifya-subscriptions' ),
-					'year'  => __( 'Year(s)', 'webifya-subscriptions' ),
+					'day'   => __( 'Day(s)', 'subscribely-recurring-billing' ),
+					'week'  => __( 'Week(s)', 'subscribely-recurring-billing' ),
+					'month' => __( 'Month(s)', 'subscribely-recurring-billing' ),
+					'year'  => __( 'Year(s)', 'subscribely-recurring-billing' ),
 				),
 			)
 		);
@@ -79,8 +79,8 @@ class WFS_Product {
 		woocommerce_wp_text_input(
 			array(
 				'id'                => '_wfs_trial_days',
-				'label'             => __( 'Free trial', 'webifya-subscriptions' ),
-				'description'       => __( 'Number of free-trial days before the first recurring payment.', 'webifya-subscriptions' ),
+				'label'             => __( 'Free trial', 'subscribely-recurring-billing' ),
+				'description'       => __( 'Number of free-trial days before the first recurring payment.', 'subscribely-recurring-billing' ),
 				'desc_tip'          => true,
 				'type'              => 'number',
 				'value'             => get_post_meta( get_the_ID(), '_wfs_trial_days', true ) ?: 0,
@@ -91,8 +91,8 @@ class WFS_Product {
 		woocommerce_wp_text_input(
 			array(
 				'id'          => '_wfs_signup_fee',
-				'label'       => __( 'Sign-up fee', 'webifya-subscriptions' ) . ' (' . get_woocommerce_currency_symbol() . ')',
-				'description' => __( 'One-time fee charged at checkout, including when a free trial is used.', 'webifya-subscriptions' ),
+				'label'       => __( 'Sign-up fee', 'subscribely-recurring-billing' ) . ' (' . get_woocommerce_currency_symbol() . ')',
+				'description' => __( 'One-time fee charged at checkout, including when a free trial is used.', 'subscribely-recurring-billing' ),
 				'desc_tip'    => true,
 				'data_type'   => 'price',
 				'value'       => get_post_meta( get_the_ID(), '_wfs_signup_fee', true ) ?: '',
@@ -102,8 +102,8 @@ class WFS_Product {
 		woocommerce_wp_text_input(
 			array(
 				'id'                => '_wfs_renewal_limit',
-				'label'             => __( 'Renewal payment limit', 'webifya-subscriptions' ),
-				'description'       => __( 'Maximum successful renewal payments. Use 0 for an ongoing subscription.', 'webifya-subscriptions' ),
+				'label'             => __( 'Renewal payment limit', 'subscribely-recurring-billing' ),
+				'description'       => __( 'Maximum successful renewal payments. Use 0 for an ongoing subscription.', 'subscribely-recurring-billing' ),
 				'desc_tip'          => true,
 				'type'              => 'number',
 				'value'             => get_post_meta( get_the_ID(), '_wfs_renewal_limit', true ) ?: 0,
@@ -151,19 +151,19 @@ class WFS_Product {
 		$period   = sanitize_key( $product->get_meta( '_wfs_period' ) ?: 'month' );
 		$label    = 1 === $interval ? $period : $interval . ' ' . $period . 's';
 
-		$details    = array( sprintf( __( 'every %s', 'webifya-subscriptions' ), $label ) );
+		$details    = array( sprintf( __( 'every %s', 'subscribely-recurring-billing' ), $label ) );
 		$trial_days = absint( $product->get_meta( '_wfs_trial_days' ) );
 		$signup_fee = (float) $product->get_meta( '_wfs_signup_fee' );
 
 		if ( $trial_days ) {
 			$details[] = sprintf(
 				/* translators: %d: number of trial days. */
-				_n( '%d-day free trial', '%d-day free trial', $trial_days, 'webifya-subscriptions' ),
+				_n( '%d-day free trial', '%d-day free trial', $trial_days, 'subscribely-recurring-billing' ),
 				$trial_days
 			);
 		}
 		if ( $signup_fee > 0 ) {
-			$details[] = sprintf( __( '%s sign-up fee', 'webifya-subscriptions' ), html_entity_decode( wp_strip_all_tags( wc_price( $signup_fee ) ), ENT_QUOTES, get_bloginfo( 'charset' ) ) );
+			$details[] = sprintf( __( '%s sign-up fee', 'subscribely-recurring-billing' ), html_entity_decode( wp_strip_all_tags( wc_price( $signup_fee ) ), ENT_QUOTES, get_bloginfo( 'charset' ) ) );
 		}
 
 		return $html . ' <span class="wfs-period">' . esc_html( implode( ' · ', $details ) ) . '</span>';
@@ -209,22 +209,22 @@ class WFS_Product {
 		$recurring = isset( $cart_item['_wfs_recurring_price'] ) ? (float) $cart_item['_wfs_recurring_price'] : (float) $product->get_regular_price();
 		$price     = html_entity_decode( wp_strip_all_tags( wc_price( $recurring ) ), ENT_QUOTES, get_bloginfo( 'charset' ) );
 		$cadence   = 1 === $interval
-			? sprintf( __( '%1$s per %2$s', 'webifya-subscriptions' ), $price, $period )
-			: sprintf( __( '%1$s every %2$d %3$ss', 'webifya-subscriptions' ), $price, $interval, $period );
-		$data[]    = array( 'key' => __( 'Billing', 'webifya-subscriptions' ), 'value' => $cadence );
+			? sprintf( __( '%1$s per %2$s', 'subscribely-recurring-billing' ), $price, $period )
+			: sprintf( __( '%1$s every %2$d %3$ss', 'subscribely-recurring-billing' ), $price, $interval, $period );
+		$data[]    = array( 'key' => __( 'Billing', 'subscribely-recurring-billing' ), 'value' => $cadence );
 
 		$trial = absint( $product->get_meta( '_wfs_trial_days' ) );
 		if ( $trial ) {
 			$data[] = array(
-				'key'   => __( 'Free trial', 'webifya-subscriptions' ),
-				'value' => sprintf( _n( '%d day', '%d days', $trial, 'webifya-subscriptions' ), $trial ),
+				'key'   => __( 'Free trial', 'subscribely-recurring-billing' ),
+				'value' => sprintf( _n( '%d day', '%d days', $trial, 'subscribely-recurring-billing' ), $trial ),
 			);
 		}
 
 		$signup = (float) $product->get_meta( '_wfs_signup_fee' );
 		if ( $signup > 0 ) {
 			$data[] = array(
-				'key'   => __( 'One-time sign-up fee', 'webifya-subscriptions' ),
+				'key'   => __( 'One-time sign-up fee', 'subscribely-recurring-billing' ),
 				'value' => wp_strip_all_tags( wc_price( $signup ) ),
 			);
 		}
@@ -232,7 +232,7 @@ class WFS_Product {
 		$limit = absint( $product->get_meta( '_wfs_renewal_limit' ) );
 		if ( $limit ) {
 			$data[] = array(
-				'key'   => __( 'Renewal payments', 'webifya-subscriptions' ),
+				'key'   => __( 'Renewal payments', 'subscribely-recurring-billing' ),
 				'value' => (string) $limit,
 			);
 		}
