@@ -2,7 +2,7 @@
 /**
  * Customer account area.
  *
- * @package Webifya_Subscriptions
+ * @package Subscribely_Recurring_Billing
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -36,7 +36,7 @@ class WFS_Account {
 	public static function menu_item( $items ) {
 		$logout = isset( $items['customer-logout'] ) ? $items['customer-logout'] : null;
 		unset( $items['customer-logout'] );
-		$items[ self::ENDPOINT ] = __( 'Subscriptions', 'webifya-subscriptions' );
+		$items[ self::ENDPOINT ] = __( 'Subscriptions', 'subscribely-recurring-billing' );
 		if ( null !== $logout ) {
 			$items['customer-logout'] = $logout;
 		}
@@ -58,12 +58,12 @@ class WFS_Account {
 		);
 
 		if ( ! $subscriptions ) {
-			echo '<p>' . esc_html__( 'You do not have any subscriptions yet.', 'webifya-subscriptions' ) . '</p>';
+			echo '<p>' . esc_html__( 'You do not have any subscriptions yet.', 'subscribely-recurring-billing' ) . '</p>';
 			return;
 		}
 
 		echo '<table class="woocommerce-orders-table shop_table shop_table_responsive">';
-		echo '<thead><tr><th>' . esc_html__( 'Subscription', 'webifya-subscriptions' ) . '</th><th>' . esc_html__( 'Status', 'webifya-subscriptions' ) . '</th><th>' . esc_html__( 'Next payment', 'webifya-subscriptions' ) . '</th><th>' . esc_html__( 'Actions', 'webifya-subscriptions' ) . '</th></tr></thead><tbody>';
+		echo '<thead><tr><th>' . esc_html__( 'Subscription', 'subscribely-recurring-billing' ) . '</th><th>' . esc_html__( 'Status', 'subscribely-recurring-billing' ) . '</th><th>' . esc_html__( 'Next payment', 'subscribely-recurring-billing' ) . '</th><th>' . esc_html__( 'Actions', 'subscribely-recurring-billing' ) . '</th></tr></thead><tbody>';
 		foreach ( $subscriptions as $subscription ) {
 			$status   = get_post_meta( $subscription->ID, '_wfs_status', true );
 			$next     = absint( get_post_meta( $subscription->ID, '_wfs_next_payment', true ) );
@@ -79,10 +79,10 @@ class WFS_Account {
 			echo '<td>' . ( $next ? esc_html( wp_date( wc_date_format(), $next ) ) : '&mdash;' ) . '</td>';
 			echo '<td>';
 			if ( $pending && $pending->needs_payment() ) {
-				echo '<a class="button pay" href="' . esc_url( $pending->get_checkout_payment_url() ) . '">' . esc_html__( 'Pay renewal', 'webifya-subscriptions' ) . '</a> ';
+				echo '<a class="button pay" href="' . esc_url( $pending->get_checkout_payment_url() ) . '">' . esc_html__( 'Pay renewal', 'subscribely-recurring-billing' ) . '</a> ';
 			}
 			if ( in_array( $status, array( 'active', 'trialling', 'past-due', 'on-hold' ), true ) ) {
-				echo '<a class="button cancel" href="' . esc_url( $cancel ) . '">' . esc_html__( 'Cancel', 'webifya-subscriptions' ) . '</a>';
+				echo '<a class="button cancel" href="' . esc_url( $cancel ) . '">' . esc_html__( 'Cancel', 'subscribely-recurring-billing' ) . '</a>';
 			}
 			echo '</td></tr>';
 		}
@@ -101,7 +101,7 @@ class WFS_Account {
 		$nonce           = sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) );
 		$owner           = absint( get_post_meta( $subscription_id, '_wfs_customer_id', true ) );
 		if ( $owner !== get_current_user_id() || ! wp_verify_nonce( $nonce, 'wfs_cancel_' . $subscription_id ) ) {
-			wc_add_notice( __( 'This subscription could not be cancelled.', 'webifya-subscriptions' ), 'error' );
+			wc_add_notice( __( 'This subscription could not be cancelled.', 'subscribely-recurring-billing' ), 'error' );
 			wp_safe_redirect( wc_get_account_endpoint_url( self::ENDPOINT ) );
 			exit;
 		}
@@ -109,7 +109,7 @@ class WFS_Account {
 		WFS_Subscription::set_status( $subscription_id, 'cancelled', 'customer-cancelled' );
 		$pending = wc_get_order( absint( get_post_meta( $subscription_id, '_wfs_pending_order_id', true ) ) );
 		if ( $pending && $pending->needs_payment() ) {
-			$pending->update_status( 'cancelled', __( 'Related subscription cancelled by customer.', 'webifya-subscriptions' ) );
+			$pending->update_status( 'cancelled', __( 'Related subscription cancelled by customer.', 'subscribely-recurring-billing' ) );
 		}
 		delete_post_meta( $subscription_id, '_wfs_pending_order_id' );
 
@@ -121,7 +121,7 @@ class WFS_Account {
 			wp_clear_scheduled_hook( WFS_Renewals::RETRY_ACTION, array( $subscription_id ) );
 		}
 
-		wc_add_notice( __( 'Your subscription has been cancelled.', 'webifya-subscriptions' ) );
+		wc_add_notice( __( 'Your subscription has been cancelled.', 'subscribely-recurring-billing' ) );
 		wp_safe_redirect( wc_get_account_endpoint_url( self::ENDPOINT ) );
 		exit;
 	}
