@@ -62,14 +62,12 @@ class WFS_Upgrade {
 		return array_merge( array( $settings, $upgrade ), $links );
 	}
 
-	/** Add useful details links beneath the plugin description. */
+	/** Add the documentation link beneath the plugin description. */
 	public static function plugin_row_meta( $links, $file ) {
 		if ( plugin_basename( WFS_PLUGIN_FILE ) !== $file ) {
 			return $links;
 		}
 		$links[] = '<a href="' . esc_url( self::DETAILS_URL . 'documentation/' ) . '" target="_blank" rel="noopener">' . esc_html__( 'Documentation', 'subscribely-recurring-billing' ) . '</a>';
-		$links[] = '<a href="' . esc_url( self::DETAILS_URL . '#faq' ) . '" target="_blank" rel="noopener">' . esc_html__( 'FAQ', 'subscribely-recurring-billing' ) . '</a>';
-		$links[] = '<a href="' . esc_url( self::DETAILS_URL ) . '" target="_blank" rel="noopener">' . esc_html__( 'Plugin details', 'subscribely-recurring-billing' ) . '</a>';
 		return $links;
 	}
 
