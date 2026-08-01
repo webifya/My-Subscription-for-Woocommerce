@@ -139,11 +139,10 @@ class WFS_Settings {
 	/** Render explicit site-profile consent. */
 	public static function profile_consent_field() {
 		printf(
-			'<label><input type="checkbox" name="%1$s[share_site_profile]" value="1" %2$s /> %3$s</label><p class="description">%4$s</p>',
+			'<label><input type="checkbox" name="%1$s[share_site_profile]" value="1" %2$s /> %3$s</label>',
 			esc_attr( self::OPTION ),
 			checked( self::get( 'share_site_profile' ), 1, false ),
-			esc_html__( 'Allow Subscribely to share this website profile with Web Ninja LLC.', 'subscribely-recurring-billing' ),
-			esc_html__( 'Includes the website and business name, administrator name/email/phone, domain, plugin version, WordPress/PHP versions, active theme, and multisite status. No order, customer, payment, or subscription data is collected.', 'subscribely-recurring-billing' )
+			esc_html__( 'Allow Subscribely to share this website profile to receive regular updates and compatibility support.', 'subscribely-recurring-billing' )
 		);
 	}
 
