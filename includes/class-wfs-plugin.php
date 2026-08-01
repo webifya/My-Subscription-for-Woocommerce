@@ -2,7 +2,7 @@
 /**
  * Main plugin class.
  *
- * @package Webifya_Subscriptions
+ * @package Subscribely_Recurring_Billing
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -71,21 +71,21 @@ final class WFS_Plugin {
 		}
 
 		$known = array(
-			'stripe'                   => __( 'Credit or debit card', 'webifya-subscriptions' ),
-			'stripe_cc'                => __( 'Credit or debit card', 'webifya-subscriptions' ),
-			'stripe_googlepay'         => __( 'Google Pay', 'webifya-subscriptions' ),
-			'stripe_applepay'          => __( 'Apple Pay', 'webifya-subscriptions' ),
-			'square_credit_card'       => __( 'Credit or debit card (Square)', 'webifya-subscriptions' ),
-			'ppcp-gateway'             => __( 'PayPal', 'webifya-subscriptions' ),
-			'ppcp-credit-card-gateway' => __( 'Credit or debit card (PayPal)', 'webifya-subscriptions' ),
-			'ppcp-card-button-gateway' => __( 'Credit or debit card (PayPal)', 'webifya-subscriptions' ),
+			'stripe'                   => __( 'Credit or debit card', 'subscribely-recurring-billing' ),
+			'stripe_cc'                => __( 'Credit or debit card', 'subscribely-recurring-billing' ),
+			'stripe_googlepay'         => __( 'Google Pay', 'subscribely-recurring-billing' ),
+			'stripe_applepay'          => __( 'Apple Pay', 'subscribely-recurring-billing' ),
+			'square_credit_card'       => __( 'Credit or debit card (Square)', 'subscribely-recurring-billing' ),
+			'ppcp-gateway'             => __( 'PayPal', 'subscribely-recurring-billing' ),
+			'ppcp-credit-card-gateway' => __( 'Credit or debit card (PayPal)', 'subscribely-recurring-billing' ),
+			'ppcp-card-button-gateway' => __( 'Credit or debit card (PayPal)', 'subscribely-recurring-billing' ),
 		);
 		if ( isset( $known[ $gateway_id ] ) ) {
 			return $known[ $gateway_id ];
 		}
 
 		$fallback = ucwords( str_replace( array( '-', '_' ), ' ', sanitize_key( $gateway_id ) ) );
-		return $fallback ?: __( 'Payment method', 'webifya-subscriptions' );
+		return $fallback ?: __( 'Payment method', 'subscribely-recurring-billing' );
 	}
 
 	/**
@@ -141,7 +141,7 @@ final class WFS_Plugin {
 	 */
 	public static function woocommerce_notice() {
 		echo '<div class="notice notice-error"><p>';
-		echo esc_html__( 'My Subscriptions for WooCommerce requires WooCommerce to be installed and active.', 'webifya-subscriptions' );
+		echo esc_html__( 'Subscribely – Recurring Billing for WooCommerce requires WooCommerce to be installed and active.', 'subscribely-recurring-billing' );
 		echo '</p></div>';
 	}
 }
