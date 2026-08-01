@@ -4,7 +4,7 @@ Tags: woocommerce, subscriptions, recurring payments, subscription products, ren
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.5.3
+Stable tag: 0.5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,7 +41,7 @@ Features:
 
 Subscribely PRO adds automatic supported-gateway renewals, retry handling with invoice fallback, customer pause and resume, early renewal, advanced administration, and protected subscriber downloads with limits and expiry.
 
-Subscribely PRO is currently $69.99 per year. Learn more at https://www.webninjallc.com/plugins/subscribely/ or purchase at https://www.webninjallc.com/product/subscribely-pro-recurring-billing-for-woocommerce/
+Subscribely PRO is currently $69.99 per year. Learn more at https://webninjallc.com/plugins/subscribely/
 
 == Installation ==
 
@@ -86,6 +86,9 @@ Yes. The plugin declares compatibility with WooCommerce High-Performance Order S
 The Free edition shares a site profile only after an administrator explicitly opts in. It never sends orders, customers, payment details, or subscription records. Disabling permission requests deletion of the stored Free profile.
 
 == Changelog ==
+
+= 0.5.4 =
+* Routed all Free-edition PRO promotions through the Subscribely sales page.
 
 = 0.5.3 =
 * Simplified the optional site-profile sharing message for clearer update and compatibility guidance.
