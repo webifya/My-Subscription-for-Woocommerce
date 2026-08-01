@@ -8,8 +8,8 @@
 defined( 'ABSPATH' ) || exit;
 
 class WFS_Upgrade {
-	const CHECKOUT_URL = 'https://www.webninjallc.com/product/subscribely-pro-recurring-billing-for-woocommerce/';
-	const DETAILS_URL  = 'https://www.webninjallc.com/plugins/subscribely/';
+	const PROMO_URL   = 'https://webninjallc.com/plugins/subscribely/';
+	const DETAILS_URL = 'https://webninjallc.com/plugins/subscribely/';
 
 	/**
 	 * Register upgrade entry points.
@@ -56,7 +56,7 @@ class WFS_Upgrade {
 				'utm_medium'   => 'plugin-link',
 				'utm_campaign' => 'subscribely-pro',
 			),
-			self::CHECKOUT_URL
+			self::PROMO_URL
 		);
 		$upgrade = '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener sponsored" style="color:#087a4b;font-weight:700">' . esc_html__( 'Go PRO', 'subscribely-recurring-billing' ) . '</a>';
 		return array_merge( array( $settings, $upgrade ), $links );
@@ -87,7 +87,7 @@ class WFS_Upgrade {
 				'utm_medium'   => 'upgrade-page',
 				'utm_campaign' => 'subscribely-pro',
 			),
-			self::CHECKOUT_URL
+			self::PROMO_URL
 		);
 		?>
 		<div class="wrap wfs-upgrade-wrap">
