@@ -1,23 +1,23 @@
 <?php
 /**
- * Plugin Name: My Subscriptions for WooCommerce
+ * Plugin Name: Subscribely – Recurring Billing for WooCommerce
  * Plugin URI: https://www.webninjallc.com/
- * Description: Sell subscription products with gateway-neutral, customer-paid renewal orders.
- * Version: 0.4.4
+ * Description: Sell recurring products with flexible billing, renewal orders, and WooCommerce payment gateway compatibility.
+ * Version: 0.5.0
  * Author: Mahfuzar Rahman
  * Author URI: https://github.com/webifya
- * Text Domain: webifya-subscriptions
+ * Text Domain: subscribely-recurring-billing
  * Requires at least: 6.4
  * Requires PHP: 7.4
  * WC requires at least: 8.5
  * WC tested up to: 9.9
  *
- * @package Webifya_Subscriptions
+ * @package Subscribely_Recurring_Billing
  */
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WFS_VERSION', '0.4.4' );
+define( 'WFS_VERSION', '0.5.0' );
 define( 'WFS_PLUGIN_FILE', __FILE__ );
 define( 'WFS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
