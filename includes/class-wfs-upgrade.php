@@ -8,7 +8,8 @@
 defined( 'ABSPATH' ) || exit;
 
 class WFS_Upgrade {
-	const CHECKOUT_URL = 'https://www.webninjallc.com/product/my-subscriptions-pro-for-woocommerce/';
+	const CHECKOUT_URL = 'https://www.webninjallc.com/product/subscribely-pro-recurring-billing-for-woocommerce/';
+	const DETAILS_URL  = 'https://www.webninjallc.com/plugins/subscribely/';
 
 	/**
 	 * Register upgrade entry points.
@@ -16,6 +17,7 @@ class WFS_Upgrade {
 	public static function init() {
 		add_action( 'admin_menu', array( __CLASS__, 'menu' ), 99 );
 		add_filter( 'plugin_action_links_' . plugin_basename( WFS_PLUGIN_FILE ), array( __CLASS__, 'plugin_action_links' ) );
+		add_filter( 'plugin_row_meta', array( __CLASS__, 'plugin_row_meta' ), 10, 2 );
 	}
 
 	/**
@@ -43,8 +45,9 @@ class WFS_Upgrade {
 	 * @return array
 	 */
 	public static function plugin_action_links( $links ) {
+		$settings = '<a href="' . esc_url( admin_url( 'admin.php?page=wfs-settings' ) ) . '">' . esc_html__( 'Settings', 'subscribely-recurring-billing' ) . '</a>';
 		if ( self::pro_is_active() ) {
-			return $links;
+			return array_merge( array( $settings ), $links );
 		}
 
 		$url = add_query_arg(
@@ -55,12 +58,18 @@ class WFS_Upgrade {
 			),
 			self::CHECKOUT_URL
 		);
-		array_unshift(
-			$links,
-			'<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener sponsored" style="color:#7c3aed;font-weight:700">' .
-			esc_html__( 'Upgrade to PRO — $49.99/year', 'subscribely-recurring-billing' ) .
-			'</a>'
-		);
+		$upgrade = '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener sponsored" style="color:#087a4b;font-weight:700">' . esc_html__( 'Go PRO', 'subscribely-recurring-billing' ) . '</a>';
+		return array_merge( array( $settings, $upgrade ), $links );
+	}
+
+	/** Add useful details links beneath the plugin description. */
+	public static function plugin_row_meta( $links, $file ) {
+		if ( plugin_basename( WFS_PLUGIN_FILE ) !== $file ) {
+			return $links;
+		}
+		$links[] = '<a href="' . esc_url( self::DETAILS_URL . 'documentation/' ) . '" target="_blank" rel="noopener">' . esc_html__( 'Documentation', 'subscribely-recurring-billing' ) . '</a>';
+		$links[] = '<a href="' . esc_url( self::DETAILS_URL . '#faq' ) . '" target="_blank" rel="noopener">' . esc_html__( 'FAQ', 'subscribely-recurring-billing' ) . '</a>';
+		$links[] = '<a href="' . esc_url( self::DETAILS_URL ) . '" target="_blank" rel="noopener">' . esc_html__( 'Plugin details', 'subscribely-recurring-billing' ) . '</a>';
 		return $links;
 	}
 
@@ -89,8 +98,8 @@ class WFS_Upgrade {
 				<h1><?php esc_html_e( 'Grow recurring revenue with Subscribely PRO', 'subscribely-recurring-billing' ); ?></h1>
 				<p><?php esc_html_e( 'Automate renewals and give customers flexible subscription controls while keeping the reliable invoicing and recovery tools from the free edition.', 'subscribely-recurring-billing' ); ?></p>
 				<div class="wfs-upgrade-price">
-					<?php esc_html_e( '$49.99 per year', 'subscribely-recurring-billing' ); ?>
-					<small><?php esc_html_e( 'for one website', 'subscribely-recurring-billing' ); ?></small>
+					<?php esc_html_e( '$69.99 per year', 'subscribely-recurring-billing' ); ?>
+					<small><?php esc_html_e( 'billed annually', 'subscribely-recurring-billing' ); ?></small>
 				</div>
 				<a class="wfs-upgrade-button" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener sponsored">
 					<?php esc_html_e( 'Get Subscribely PRO', 'subscribely-recurring-billing' ); ?>
@@ -104,6 +113,7 @@ class WFS_Upgrade {
 				<section class="wfs-upgrade-feature"><h2><?php esc_html_e( 'Early renewals', 'subscribely-recurring-billing' ); ?></h2><p><?php esc_html_e( 'Allow customers to renew before the scheduled payment date.', 'subscribely-recurring-billing' ); ?></p></section>
 				<section class="wfs-upgrade-feature"><h2><?php esc_html_e( 'Advanced administration', 'subscribely-recurring-billing' ); ?></h2><p><?php esc_html_e( 'Manage subscription status and next-payment dates directly from WordPress.', 'subscribely-recurring-billing' ); ?></p></section>
 				<section class="wfs-upgrade-feature"><h2><?php esc_html_e( 'Premium account experience', 'subscribely-recurring-billing' ); ?></h2><p><?php esc_html_e( 'Give customers detailed subscription pages and convenient self-service controls.', 'subscribely-recurring-billing' ); ?></p></section>
+				<section class="wfs-upgrade-feature"><h2><?php esc_html_e( 'Protected subscriber downloads', 'subscribely-recurring-billing' ); ?></h2><p><?php esc_html_e( 'Control file limits and expiry, reset access after renewal, and revoke downloads when entitlement ends.', 'subscribely-recurring-billing' ); ?></p></section>
 			</div>
 			<p class="wfs-upgrade-note"><?php esc_html_e( 'The free plugin remains required. PRO installs alongside it and unlocks the premium features.', 'subscribely-recurring-billing' ); ?></p>
 		</div>
