@@ -4,7 +4,7 @@ Tags: woocommerce, subscriptions, recurring payments, renewal orders
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.5.0
+Stable tag: 0.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,6 +44,11 @@ Features:
 5. Set its price and billing interval, then publish it.
 
 == Changelog ==
+
+= 0.5.1 =
+* Added an explicit opt-in setting for consent-based site profile sharing with Web Ninja LLC License Manager.
+* Added weekly profile refreshes and automatic profile removal when consent is withdrawn.
+* Site profiles never include orders, customers, payments, or subscription records.
 
 = 0.5.0 =
 * Rebranded the public plugin as Subscribely – Recurring Billing for WooCommerce.
