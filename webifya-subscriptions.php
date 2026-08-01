@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Subscribely – Recurring Billing for WooCommerce
- * Plugin URI: https://www.webninjallc.com/
- * Description: Sell recurring products with flexible billing, renewal orders, and WooCommerce payment gateway compatibility.
+ * Plugin URI: https://www.webninjallc.com/plugins/subscribely/
+ * Description: Create flexible WooCommerce subscriptions with renewal scheduling, payment recovery, trials, sign-up fees, and gateway-neutral invoices.
  * Version: 0.5.1
  * Author: Mahfuzar Rahman
  * Author URI: https://github.com/webifya
